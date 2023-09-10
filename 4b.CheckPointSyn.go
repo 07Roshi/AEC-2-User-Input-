@@ -1,47 +1,45 @@
-
 package main
 
 import (
-"fmt"
-"sync"
-"time"
+	"fmt"
+	"sync"
+	"time"
 )
 
 func worker(id int, checkpoint, resume chan struct{}, wg *sync.WaitGroup) {
-defer wg.Done()
-fmt.Printf("Worker %d: Starting\n", id)
-time.Sleep(time.Duration(id) * time.Second)
-fmt.Printf("Worker %d: Checkpoint reached\n", id)
-checkpoint <- struct{}{}
-<-resume
-fmt.Printf("Worker %d: Resuming\n", id)
+	defer wg.Done()
+	fmt.Printf("Worker %d: Starting\n", id)
+	time.Sleep(time.Duration(id) * time.Second)
+	fmt.Printf("Worker %d: Checkpoint reached\n", id)
+	checkpoint <- struct{}{}
+	<-resume
+	fmt.Printf("Worker %d: Resuming\n", id)
 }
 
 func main() {
-var numWorkers int
-fmt.Print("Enter the number of workers: ")
-fmt.Scan(&numWorkers)
-checkpoint := make(chan struct{})
-resume := make(chan struct{})
-var wg sync.WaitGroup
+	var numWorkers int
+	fmt.Print("Enter the number of workers: ")
+	fmt.Scan(&numWorkers)
+	checkpoint := make(chan struct{})
+	resume := make(chan struct{})
+	var wg sync.WaitGroup
 
-for i := 1; i <= numWorkers; i++ {
-wg.Add(1)
-go worker(i, checkpoint, resume, &wg)
+	for i := 1; i <= numWorkers; i++ {
+		wg.Add(1)
+		go worker(i, checkpoint, resume, &wg)
+	}
+
+	for i := 1; i <= numWorkers; i++ {
+		<-checkpoint
+	}
+
+	fmt.Println("All workers reached the checkpoint")
+
+	close(resume)
+	wg.Wait()
+
+	fmt.Println("All workers completed their work")
 }
-
-for i := 1; i <= numWorkers; i++ {
-<-checkpoint
-}
-
-fmt.Println("All workers reached the checkpoint")
-
-close(resume)
-wg.Wait()
-
-fmt.Println("All workers completed their work")
-}
-
 
 // Output
 // Enter the number of workers: 5
