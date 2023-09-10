@@ -7,14 +7,14 @@ import (
 )
 
 type Philosopher struct {
-	id                  int
+	id int
 	leftFork, rightFork *sync.Mutex
-	diningCycles        int
+	diningCycles int
 }
 
 type DiningTable struct {
 	philosophers []*Philosopher
-	waiter       *sync.Mutex
+	waiter *sync.Mutex
 }
 
 func (p *Philosopher) think() {
@@ -57,7 +57,7 @@ func main() {
 
 	table := &DiningTable{
 		philosophers: make([]*Philosopher, numPhilosophers),
-		waiter:       &sync.Mutex{},
+		waiter: &sync.Mutex{},
 	}
 
 	// Create forks
@@ -69,7 +69,7 @@ func main() {
 	// Create philosophers and assign forks
 	for i := 0; i < numPhilosophers; i++ {
 		table.philosophers[i] = &Philosopher{
-			id:        i,
+			id: i,
 			leftFork:  forks[i],
 			rightFork: forks[(i+1)%numPhilosophers],
 		}
