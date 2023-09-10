@@ -29,16 +29,16 @@ func PrintArea(s Shape){
 
 func main(){
 	var circleRadius float64
-fmt.Print("Enter the radius of the circle: ")
-fmt.Scan(&circleRadius)
-circle := Circle{radius: circleRadius}
+	fmt.Print("Enter the radius of the circle: ")
+	fmt.Scan(&circleRadius)
+	circle := Circle{radius: circleRadius}
 
-var rectangleWidth, rectangleHeight float64
-fmt.Print("Enter the width of the rectangle: ")
-fmt.Scan(&rectangleWidth)
-fmt.Print("Enter the height of the rectangle: ")
-fmt.Scan(&rectangleHeight)
-rectangle := Rectangle{width: rectangleWidth, height: rectangleHeight}
+	var rectangleWidth, rectangleHeight float64
+	fmt.Print("Enter the width of the rectangle: ")
+	fmt.Scan(&rectangleWidth)
+	fmt.Print("Enter the height of the rectangle: ")
+	fmt.Scan(&rectangleHeight)
+	rectangle := Rectangle{width: rectangleWidth, height: rectangleHeight}
 
 	PrintArea(circle)
 	PrintArea(rectangle)
